@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>平假名测试</title>
+    <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">五十音图</a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" aria-expanded="true">
+            <ul class="nav navbar-nav nav-pills nav-stacked">
+                <li role="presentation"><a href="gojuonzu.html">假名学习</a></li>
+                <li role="presentation" class="active"><a href="#">平假名测试</a></li>
+                <li role="presentation"><a href="#">片假名测试</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="row clearmargin text-center" id="testhiragana">
+    <div class="col-lg-2 col-md-1 rowdisplaynone clearpadding"><label></label></div>
+    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 clearpadding" :class="{displaynone : isOver}">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><label class="btn-success">正确:{{rightkananumber}}</label></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><label>剩余:{{remainder}}</label></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><label class="btn-danger">错误:{{wrongkananumber}}</label></div>
+        <div class="">
+            <label class="testkana img-thumbnail">{{showkana.hiragana}}</label>
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 paddingblock">
+            <button class="btn btn-lg btn-block testromaji" @click="validate(1)" :class="[colorbutton[1].color,colorbutton[0].disabled]">{{answerkanas[1].romaji}}</button>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 paddingblock">
+            <button class="btn btn-lg btn-block testromaji" @click="validate(2)" :class="[colorbutton[2].color,colorbutton[0].disabled]">{{answerkanas[2].romaji}}</button>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 paddingblock">
+            <button class="btn btn-lg btn-block testromaji" @click="validate(3)" :class="[colorbutton[3].color,colorbutton[0].disabled]">{{answerkanas[3].romaji}}</button>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 paddingblock">
+            <button class="btn btn-lg btn-block testromaji" @click="validate(4)" :class="[colorbutton[4].color,colorbutton[0].disabled]">{{answerkanas[4].romaji}}</button>
+        </div>
+    </div>
+    <div></div>
+    <div class="col-lg-2 col-md-1 rowdisplaynone clearpadding"><label></label></div>
+</div>
+<script type="text/javascript" src="public/js/jquery.min.js"></script>
+<script type="text/javascript" src="public/js/bootstrap.js"></script>
+<script type="text/javascript" src="public/js/vue.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+            el: '#testhiragana',
+            data: {
+                remainder : 0,
+                rightkananumber : 0,
+                wrongkananumber : 0,
+                isOver :false,
+                testkanas: [],
+                showkana:[],
+                wrongkanas : [],
+                answerkanas : [
+                    [],[],[],[],[]
+                ],
+                colorbutton: [
+                    [],[],[],[],[]
+                ],
+                kanas: [
+                    {
+                        hiragana: 'あ',
+                        romaji: 'a'
+                    }, {
+                        hiragana: 'い',
+                        romaji: 'i'
+                    }, {
+                        hiragana: 'う',
+                        romaji: 'u'
+                    }, {
+                        hiragana: 'え',
+                        romaji: 'e'
+                    }, {
+                        hiragana: 'お',
+                        romaji: 'o'
+                    }, {
+                        hiragana: 'か',
+                        romaji: 'ka'
+                    }, {
+                        hiragana: 'き',
+                        romaji: 'ki'
+                    }, {
+                        hiragana: 'く',
+                        romaji: 'ku'
+                    }, {
+                        hiragana: 'け',
+                        romaji: 'ke'
+                    }, {
+                        hiragana: 'こ',
+                        romaji: 'ko'
+                    }, {
+                        hiragana: 'さ',
+                        romaji: 'sa'
+                    }, {
+                        hiragana: 'し',
+                        romaji: 'shi'
+                    }, {
+                        hiragana: 'す',
+                        romaji: 'su'
+                    }, {
+                        hiragana: 'せ',
+                        romaji: 'se'
+                    }, {
+                        hiragana: 'そ',
+                        romaji: 'so'
+                    }, {
+                        hiragana: 'た',
+                        romaji: 'ta'
+                    }, {
+                        hiragana: 'ち',
+                        romaji: 'chi'
+                    }, {
+                        hiragana: 'つ',
+                        romaji: 'tsu'
+                    }, {
+                        hiragana: 'て',
+                        romaji: 'te'
+                    }, {
+                        hiragana: 'と',
+                        romaji: 'to'
+                    }, {
+                        hiragana: 'な',
+                        romaji: 'na'
+                    }, {
+                        hiragana: 'に',
+                        romaji: 'ni'
+                    }, {
+                        hiragana: 'ぬ',
+                        romaji: 'nu'
+                    }, {
+                        hiragana: 'ね',
+                        romaji: 'ne'
+                    }, {
+                        hiragana: 'の',
+                        romaji: 'no'
+                    }, {
+                        hiragana: 'は',
+                        romaji: 'ha'
+                    }, {
+                        hiragana: 'ひ',
+                        romaji: 'hi'
+                    }, {
+                        hiragana: 'ふ',
+                        romaji: 'fu'
+                    }, {
+                        hiragana: 'へ',
+                        romaji: 'he'
+                    }, {
+                        hiragana: 'ほ',
+                        romaji: 'ho'
+                    }, {
+                        hiragana: 'ま',
+                        romaji: 'ma'
+                    }, {
+                        hiragana: 'み',
+                        romaji: 'mi'
+                    }, {
+                        hiragana: 'む',
+                        romaji: 'mu'
+                    }, {
+                        hiragana: 'め',
+                        romaji: 'me'
+                    }, {
+                        hiragana: 'も',
+                        romaji: 'mo'
+                    }, {
+                        hiragana: 'や',
+                        romaji: 'ya'
+                    }, {
+                        hiragana: 'ゆ',
+                        romaji: 'yu'
+                    }, {
+                        hiragana: 'よ',
+                        romaji: 'yo'
+                    }, {
+                        hiragana: 'ら',
+                        romaji: 'ra'
+                    }, {
+                        hiragana: 'り',
+                        romaji: 'ri'
+                    }, {
+                        hiragana: 'る',
+                        romaji: 'ru'
+                    }, {
+                        hiragana: 'れ',
+                        romaji: 're'
+                    }, {
+                        hiragana: 'ろ',
+                        romaji: 'ro'
+                    }, {
+                        hiragana: 'わ',
+                        romaji: 'wa'
+                    }, {
+                        hiragana: 'を',
+                        romaji: 'wo'
+                    }, {
+                        hiragana: 'ん',
+                        romaji: 'nn'
+                    }
+                ]
+            },
+            methods: {
+                createtestkanas : function () {
+                    this.testkanas = JSON.parse(JSON.stringify(this.kanas));
+                    this.kanaboxs = JSON.parse(JSON.stringify(this.kanas));
+                    this.initshowkana();
+                },
+                initshowkana : function () {
+                    var randomanswer = Math.ceil(Math.random()*4);
+                    var randomkana = Math.floor(Math.random()*this.testkanas.length);
+                    this.showkana = this.testkanas[randomkana];
+                    this.answerkanas[0] = randomanswer;
+                    this.colorbutton = [[],[],[],[],[]];
+                    switch (randomanswer){
+                        case 1 :
+                            this.answerkanas[1] = this.showkana;
+                            this.testkanas.splice(randomkana,1);
+                            this.kanaboxs.splice(randomkana,1);
+                            var wrongkana1 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[2] = this.kanaboxs[wrongkana1];
+                            this.kanaboxs.splice(wrongkana1,1);
+                            var wrongkana2 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[3] = this.kanaboxs[wrongkana2];
+                            this.kanaboxs.splice(wrongkana2,1);
+                            var wrongkana3 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[4] = this.kanaboxs[wrongkana3];
+                            this.kanaboxs.splice(wrongkana3,1);
+                            this.kanaboxs = JSON.parse(JSON.stringify(this.kanas));
+                            this.remainder = this.testkanas.length;
+                            break;
+                        case 2 :
+                            this.answerkanas[2] = this.showkana;
+                            this.testkanas.splice(randomkana,1);
+                            this.kanaboxs.splice(randomkana,1);
+                            var wrongkana1 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[1] = this.kanaboxs[wrongkana1];
+                            this.kanaboxs.splice(wrongkana1,1);
+                            var wrongkana2 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[3] = this.kanaboxs[wrongkana2];
+                            this.kanaboxs.splice(wrongkana2,1);
+                            var wrongkana3 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[4] = this.kanaboxs[wrongkana3];
+                            this.kanaboxs.splice(wrongkana3,1);
+                            this.kanaboxs = JSON.parse(JSON.stringify(this.kanas));
+                            this.remainder = this.testkanas.length;
+                            break;
+                        case 3 :
+                            this.answerkanas[3] = this.showkana;
+                            this.testkanas.splice(randomkana,1);
+                            this.kanaboxs.splice(randomkana,1);
+                            var wrongkana1 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[2] = this.kanaboxs[wrongkana1];
+                            this.kanaboxs.splice(wrongkana1,1);
+                            var wrongkana2 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[1] = this.kanaboxs[wrongkana2];
+                            this.kanaboxs.splice(wrongkana2,1);
+                            var wrongkana3 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[4] = this.kanaboxs[wrongkana3];
+                            this.kanaboxs.splice(wrongkana3,1);
+                            this.kanaboxs = JSON.parse(JSON.stringify(this.kanas));
+                            this.remainder = this.testkanas.length;
+                            break;
+                        case 4 :
+                            this.answerkanas[4] = this.showkana;
+                            this.testkanas.splice(randomkana,1);
+                            this.kanaboxs.splice(randomkana,1);
+                            var wrongkana1 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[2] = this.kanaboxs[wrongkana1];
+                            this.kanaboxs.splice(wrongkana1,1);
+                            var wrongkana2 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[3] = this.kanaboxs[wrongkana2];
+                            this.kanaboxs.splice(wrongkana2,1);
+                            var wrongkana3 = Math.floor(Math.random()*this.kanaboxs.length);
+                            this.answerkanas[1] = this.kanaboxs[wrongkana3];
+                            this.kanaboxs.splice(wrongkana3,1);
+                            this.kanaboxs = JSON.parse(JSON.stringify(this.kanas));
+                            this.remainder = this.testkanas.length;
+                            break;
+                    }
+                },
+                validate : function (answer){
+                    switch (this.answerkanas[0]){
+                        case 1:
+                            this.colorbutton[1].color = "btn-success";
+                            this.colorbutton[2].color = "btn-danger";
+                            this.colorbutton[3].color = "btn-danger";
+                            this.colorbutton[4].color = "btn-danger";
+                            this.colorbutton[0].disabled = "disabled";
+                            break;
+                        case 2:
+                            this.colorbutton[2].color = "btn-success";
+                            this.colorbutton[1].color = "btn-danger";
+                            this.colorbutton[3].color = "btn-danger";
+                            this.colorbutton[4].color = "btn-danger";
+                            this.colorbutton[0].disabled = "disabled";
+                            break;
+                        case 3:
+                            this.colorbutton[3].color = "btn-success";
+                            this.colorbutton[2].color = "btn-danger";
+                            this.colorbutton[1].color = "btn-danger";
+                            this.colorbutton[4].color = "btn-danger";
+                            this.colorbutton[0].disabled = "disabled";
+                            break;
+                        case 4:
+                            this.colorbutton[4].color = "btn-success";
+                            this.colorbutton[2].color = "btn-danger";
+                            this.colorbutton[3].color = "btn-danger";
+                            this.colorbutton[1].color = "btn-danger";
+                            this.colorbutton[0].disabled = "disabled";
+                            break;
+                    }
+                    if(answer == this.answerkanas[0]){
+                        this.rightkananumber += 1;
+                        if(this.testkanas.length == 0){
+
+                        }else {
+                            setTimeout(this.initshowkana,1000);
+                        }
+                    }else {
+                        this.wrongkananumber += 1;
+                        this.wrongkanas.push(this.showkana);
+                        if(this.testkanas.length == 0){
+
+                        }else {
+                            setTimeout(this.initshowkana,1000);
+                        }
+                    }
+                }
+            },
+            created : function () {
+                this.createtestkanas();
+            }
+        })
+        ;
+</script>
+</body>
+</html>

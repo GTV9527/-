@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>五十音图</title>
+    <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">五十音图</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse"aria-expanded="true">
+                <ul class="nav navbar-nav nav-pills nav-stacked">
+                    <li role="presentation" class="active" style="margin-top: 2px;"><a href="#">假名学习</a></li>
+                    <li role="presentation"><a href="testhiragana.html">平假名测试</a></li>
+                    <li role="presentation"><a href="testhiraganavoice.html">平假名听音测试</a></li>
+                    <li role="presentation"><a href="testkatakana.html">片假名测试</a></li>
+                    <li role="presentation"><a href="testkatakanavoice.html">片假名听音测试</a></li>
+                    <li role="presentation"><a href="hira-kata.html">平假名对应测试</a></li>
+                    <li role="presentation"><a href="kata-hira.html">片假名对应测试</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row clearmargin">
+        <div class="col-lg-3 col-md-2 rowdisplaynone clearpadding"><label></label></div>
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12" id="gojuonzu">
+            <div class="text-center">
+                <h1 class="kana" style="border: none !important;">
+                    <a target="_blank" href="https://zh.wikipedia.org/wiki/%E4%BA%94%E5%8D%81%E9%9F%B3">
+                        五十音图
+                    </a>
+                    <input type="checkbox" id="hiragana" style="display: none" v-model="hiragana"/>
+                    <label class="btn btn-default text-right" for="hiragana">平/片假名切换</label>
+                    <input type="checkbox" id="dakuon" style="display: none" v-model="dakuon"/>
+                    <label class="btn btn-default text-right" for="dakuon">是/否加入浊音</label>
+                </h1>
+            </div>
+
+            <div>
+                <table class="table">
+                    <tbody>
+                        <tr v-for="item in kanas">
+                            <td class="text-center" v-for="kana in item" v-show="kana.dakuonshow">
+                                <button class="btn kana" :class="{disabled : kana.hide}" :title="kana.romaji" @click="playvoice(kana.voice)" v-if="hiragana">
+                                    {{kana.hiragana}}
+                                </button>
+                                <button class="btn kana" :class="{disabled : kana.hide}" :title="kana.romaji" @click="playvoice(kana.voice)" v-else>
+                                    {{kana.katakana}}
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <audio id="playVoice" style="display: none" :src="voice"></audio>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-2 rowdisplaynone clearpadding"><label></label></div>
+    </div>
+    <script type="text/javascript" src="public/js/jquery.min.js" ></script>
+    <script type="text/javascript" src="public/js/bootstrap.js"></script>
+    <script type="text/javascript" src="public/js/vue.js"></script>
+    <script type="text/javascript">
+        var app = new Vue({
+            el : '#gojuonzu',
+            data : {
+                hiragana : true,
+                dakuon : false,
+                voice : ' ',
+                kanas : [
+                    [
+                        {
+                            hiragana: 'あ',
+                            katakana: 'ア',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/C231.mp3',
+                            romaji: 'a',
+                            hide: false,
+                            dakuonshow:true
+                        },{
+                            hiragana : 'い',
+                            katakana : 'イ',
+                            voice : 'http://d1.g.hjfile.cn/voice/jpsound/J02763.mp3',
+                            romaji: 'i',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'う',
+                            katakana: 'ウ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J05637.mp3',
+                            romaji: 'u',
+                            hide: false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'え',
+                            katakana: 'エ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J07201.mp3',
+                            romaji: 'e',
+                            hide: false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'お',
+                            katakana: 'オ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J08111.mp3',
+                            romaji: 'o',
+                            hide :false,
+                        dakuonshow:true
+                        }
+                    ],[
+                        {
+                            hiragana: 'か',
+                            katakana: 'カ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J10889.mp3',
+                            romaji:'ka',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'き',
+                            katakana: 'キ',
+                            voice: 'http://tts.hjapi.com/jp/9FA0E19DC651750E',
+                            romaji: 'ki',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'く',
+                            katakana: 'ク',
+                            voice: 'http://tts.hjapi.com/jp/839B844E3E8EA199',
+                            romaji: 'ku',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'け',
+                            katakana: 'ケ',
+                            voice: 'http://tts.hjapi.com/jp/1A60C68F8286360E',
+                            romaji: 'ke',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'こ',
+                            katakana: 'コ',
+                            voice: 'http://tts.hjapi.com/jp/A2DD701D57F190EF',
+                            romaji: 'ko',
+                            hide :false,
+                            dakuonshow:true
+                        }
+                    ],[
+                        {
+                            hiragana: 'が',
+                            katakana: 'ガ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J10896.mp3',
+                            romaji:'ga',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぎ',
+                            katakana: 'ギ',
+                            voice: 'http://tts.hjapi.com/jp/81E84200A8FD7A09',
+                            romaji: 'gi',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぐ',
+                            katakana: 'グ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J20161.mp3',
+                            romaji: 'gu',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'げ',
+                            katakana: 'ゲ',
+                            voice: 'https://tts.hjapi.com/jp/DBA9F889CD7BAE96',
+                            romaji: 'ge',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ご',
+                            katakana: 'ゴ',
+                            voice: 'https://tts.hjapi.com/jp/0C55206589FF3188',
+                            romaji: 'go',
+                            hide :false,
+                            dakuonshow:false
+                        }
+                    ],[
+                        {
+                            hiragana: 'さ',
+                            katakana: 'サ',
+                            voice: 'http://tts.hjapi.com/jp/CBCD4A43F202F9E9',
+                            romaji: 'sa',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'し',
+                            katakana: 'シ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J30042.mp3',
+                            romaji: 'shi',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'す',
+                            katakana: 'ス',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J37573.mp3',
+                            romaji: 'su',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'せ',
+                            katakana: 'セ',
+                            voice: 'http://tts.hjapi.com/jp/B7AF856731FE9AF3',
+                            romaji: 'se',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'そ',
+                            katakana: 'ソ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J41566.mp3',
+                            romaji: 'so',
+                            hide :false,
+                            dakuonshow:true
+                        }
+                    ],[
+                        {
+                            hiragana: 'ざ',
+                            katakana: 'ザ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J27646.mp3',
+                            romaji: 'za',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'じ',
+                            katakana: 'ジ',
+                            voice: 'http://d1.g.hjfile.cn/collins/JA/215/JA-W0215625.mp3',
+                            romaji: 'ji',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ず',
+                            katakana: 'ズ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J37580.mp3',
+                            romaji: 'zu',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぜ',
+                            katakana: 'ゼ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J39201.mp3',
+                            romaji: 'ze',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぞ',
+                            katakana: 'ゾ',
+                            voice: 'https://tts.hjapi.com/jp/F2C0360B013E2597',
+                            romaji: 'zo',
+                            hide :false,
+                            dakuonshow:false
+                        }
+                    ],[
+                        {
+                            hiragana: 'た',
+                            katakana: 'タ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J43115.mp3',
+                            romaji: 'ta',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'ち',
+                            katakana: 'チ',
+                            voice: 'http://tts.hjapi.com/jp/5B9DDC9E7ABC0EAF',
+                            romaji: 'chi',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'つ',
+                            katakana: 'ツ',
+                            voice: 'http://tts.hjapi.com/jp/869C94B92CE7A0E8',
+                            romaji: 'tsu',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'て',
+                            katakana: 'テ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J49259.mp3',
+                            romaji: 'te',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'と',
+                            katakana: 'ト',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J51161.mp3',
+                            romaji: 'to',
+                            hide :false,
+                            dakuonshow:true
+                        }
+                    ],[
+                        {
+                            hiragana: 'だ',
+                            katakana: 'ダ',
+                            voice: 'https://tts.hjapi.com/jp/A63485C3082C76C7',
+                            romaji: 'da',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぢ',
+                            katakana: 'ヂ',
+                            voice: 'http://d1.g.hjfile.cn/collins/JA/215/JA-W0215625.mp3',
+                            romaji: 'ji',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'づ',
+                            katakana: 'ヅ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J37580.mp3',
+                            romaji: 'zu',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'で',
+                            katakana: 'デ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J49261.mp3',
+                            romaji: 'de',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ど',
+                            katakana: 'ド',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/J51164.mp3',
+                            romaji: 'do',
+                            hide :false,
+                            dakuonshow:false
+                        }
+                    ],[
+                        {
+                            hiragana: 'な',
+                            katakana: 'ナ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/C300.mp3',
+                            romaji: 'na',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'に',
+                            katakana: 'ニ',
+                            voice: 'http://tts.hjapi.com/jp/1C4EC458D8290DD5',
+                            romaji: 'ni',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'ぬ',
+                            katakana: 'ヌ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/C302.mp3',
+                            romaji: 'nu',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'ね',
+                            katakana: 'ネ',
+                            voice: 'http://tts.hjapi.com/jp/76ADD12968C47BF9',
+                            romaji: 'ne',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'の',
+                            katakana: 'ノ',
+                            voice: 'http://tts.hjapi.com/jp/7CA555D14FC62E85',
+                            romaji: 'no',
+                            hide :false,
+                            dakuonshow:true
+                        }
+                    ],[
+                        {
+                            hiragana: 'は',
+                            katakana: 'ハ',
+                            voice: 'http://tts.hjapi.com/jp/0F07AA154D12085A',
+                            romaji: 'ha',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'ひ',
+                            katakana: 'ヒ',
+                            voice: 'http://tts.hjapi.com/jp/0ADE1A975DB1C731',
+                            romaji: 'hi',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'ふ',
+                            katakana: 'フ',
+                            voice: 'http://tts.hjapi.com/jp/A6239E587BD943FF',
+                            romaji: 'fu',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'へ',
+                            katakana: 'ヘ',
+                            voice: 'http://tts.hjapi.com/jp/052086AEBDEEF7C1',
+                            romaji: 'he',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'ほ',
+                            katakana: 'ホ',
+                            voice: 'http://tts.hjapi.com/jp/4363AEB4AA4F396E',
+                            romaji: 'ho',
+                            hide :false,
+                            dakuonshow:true
+                        }
+                    ],[
+                        {
+                            hiragana: 'ば',
+                            katakana: 'バ',
+                            voice: 'https://tts.hjapi.com/jp/CE938BD7014C675F',
+                            romaji: 'ba',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'び',
+                            katakana: 'ビ',
+                            voice: 'https://tts.hjapi.com/jp/E326396011D67AD1',
+                            romaji: 'bi',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぶ',
+                            katakana: 'ブ',
+                            voice: 'https://tts.hjapi.com/jp/080A31C6A91CE3AE',
+                            romaji: 'bu',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'べ',
+                            katakana: 'ベ',
+                            voice: 'http://fanyi.baidu.com/gettts?lan=jp&text=べ',
+                            romaji: 'be',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぼ',
+                            katakana: 'ボ',
+                            voice: 'https://tts.hjapi.com/jp/0C2B0073DB834EF9',
+                            romaji: 'bo',
+                            hide :false,
+                            dakuonshow:false
+                        }
+                    ],[
+                        {
+                            hiragana: 'ぱ',
+                            katakana: 'パ',
+                            voice: 'http://fanyi.baidu.com/gettts?lan=jp&text=ぱ',
+                            romaji: 'pa',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぴ',
+                            katakana: 'ピ',
+                            voice: 'http://fanyi.baidu.com/gettts?lan=jp&text=ぴ',
+                            romaji: 'pi',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぷ',
+                            katakana: 'プ',
+                            voice: 'http://fanyi.baidu.com/gettts?lan=jp&text=ぷ',
+                            romaji: 'pu',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぺ',
+                            katakana: 'ペ',
+                            voice: 'http://fanyi.baidu.com/gettts?lan=jp&text=ぺ',
+                            romaji: 'pe',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ぽ',
+                            katakana: 'ポ',
+                            voice: 'http://fanyi.baidu.com/gettts?lan=jp&text=ぽ',
+                            romaji: 'po',
+                            hide :false,
+                            dakuonshow:false
+                        }
+                    ],[
+                        {
+                            hiragana: 'ま',
+                            katakana: 'マ',
+                            voice: 'http://tts.hjapi.com/jp/E1807006F68A89E0',
+                            romaji: 'ma',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'み',
+                            katakana: 'ミ',
+                            voice: 'http://tts.hjapi.com/jp/E4C19FDFFFA12092',
+                            romaji: 'mi',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'む',
+                            katakana: 'ム',
+                            voice: 'http://tts.hjapi.com/jp/973DAB38DDF6551C',
+                            romaji: 'mu',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'め',
+                            katakana: 'メ',
+                            voice: 'http://tts.hjapi.com/jp/7F586E8E23DD9DD6',
+                            romaji: 'me',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'も',
+                            katakana: 'モ',
+                            voice: 'http://tts.hjapi.com/jp/EBFFD5FEDEA6FAB3',
+                            romaji: 'mo',
+                            hide :false,
+                            dakuonshow:true
+                        }
+                    ],[
+                        {
+                            hiragana: 'や',
+                            katakana: 'ヤ',
+                            voice: 'http://tts.hjapi.com/jp/66B10BC2BEA287FD',
+                            romaji: 'ya',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: '　',
+                            katakana: '　',
+                            voice: '',
+                            romaji: 'i',
+                            hide :true,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'ゆ',
+                            katakana: 'ユ',
+                            voice: 'http://tts.hjapi.com/jp/4E17BCC4157D06B0',
+                            romaji: 'yu',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: '𛀁',
+                            katakana: 'エ',
+                            voice: '',
+                            romaji: 'ye',
+                            hide :true,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'よ',
+                            katakana: 'ヨ',
+                            voice: 'http://tts.hjapi.com/jp/3D1A4827A48F29C9',
+                            romaji: 'yo',
+                            hide :false,
+                            dakuonshow:true
+                        }
+                    ],[
+                        {
+                            hiragana: 'ら',
+                            katakana: 'ラ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/C380.mp3',
+                            romaji: 'ra',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'り',
+                            katakana: 'リ',
+                            voice: 'http://tts.hjapi.com/jp/A6E11B6600E2E3BF',
+                            romaji: 'ri',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'る',
+                            katakana: 'ル',
+                            voice: 'http://tts.hjapi.com/jp/2C0AEC1409C647B7',
+                            romaji: 'ru',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'れ',
+                            katakana: 'レ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/C383.mp3',
+                            romaji: 're',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'ろ',
+                            katakana: 'ロ',
+                            voice: 'http://tts.hjapi.com/jp/A759B1E7989CD0A3',
+                            romaji: 'ro',
+                            hide :false,
+                            dakuonshow:true
+                        }
+                    ],[
+                        {
+                            hiragana: 'わ',
+                            katakana: 'ワ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/C10.mp3',
+                            romaji: 'wa',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'ゐ',
+                            katakana: 'ヰ',
+                            voice: 'http://tts.hjapi.com/jp/2C8E8193EE6356B5',
+                            romaji: 'wi',
+                            hide :true,
+                            dakuonshow:true
+                        },{
+                            hiragana: '　',
+                            katakana: '　',
+                            voice: '',
+                            romaji: 'u',
+                            hide :true,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'ゑ',
+                            katakana: 'ヱ',
+                            voice: 'http://tts.hjapi.com/jp/373CC5B39ABE7E0A',
+                            romaji: 'we',
+                            hide :true,
+                            dakuonshow:true
+                        },{
+                            hiragana: 'を',
+                            katakana: 'ヲ',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/C386.mp3',
+                            romaji: 'wo',
+                            hide :false,
+                            dakuonshow:true
+                        }
+                    ],[
+                        {
+                            hiragana: 'わ゙',
+                            katakana: 'ヷ',
+                            voice: '',
+                            romaji: 'va',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ゐ゙',
+                            katakana: 'ヸ',
+                            voice: '',
+                            romaji: 'vi',
+                            hide :true,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ゔ',
+                            katakana: 'ヴ',
+                            voice: '',
+                            romaji: 'vu',
+                            hide :false,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'ゑ゙',
+                            katakana: 'ヹ',
+                            voice: '',
+                            romaji: 've',
+                            hide :true,
+                            dakuonshow:false
+                        },{
+                            hiragana: 'を゙',
+                            katakana: 'ヺ',
+                            voice: '',
+                            romaji: 'vo',
+                            hide :false,
+                            dakuonshow:false
+                        }
+                    ],[
+                        {
+                            hiragana: 'ん',
+                            katakana: 'ン',
+                            voice: 'http://d1.g.hjfile.cn/voice/jpsound/C387.mp3',
+                            romaji: 'nn',
+                            hide :false,
+                            dakuonshow:true
+                        },{
+                            hiragana: '　',
+                            katakana: '　',
+                            voice: '',
+                            romaji: '',
+                            hide :true,
+                            dakuonshow:true
+                        },{
+                            hiragana: '　',
+                            katakana: '　',
+                            voice: '',
+                            romaji: '',
+                            hide :true,
+                            dakuonshow:true
+                        },{
+                            hiragana: '　',
+                            katakana: '　',
+                            voice: '',
+                            romaji: '',
+                            hide :true,
+                            dakuonshow:true
+                        },{
+                            hiragana: '　',
+                            katakana: '　',
+                            voice: '',
+                            romaji: '　',
+                            hide :true,
+                            dakuonshow:true
+                        }
+                    ]
+                ]
+            },
+            methods:{
+                playvoice : function (event){
+                    this.voice = event;
+                    setTimeout(this.Play,0)
+                    },
+                Play : function(){
+                    var audio = document.querySelector("#playVoice");
+                    audio.play();
+                },
+                letitshow : function (number) {
+                    this.kanas[number][0].dakuonshow = true;
+                    this.kanas[number][1].dakuonshow = true;
+                    this.kanas[number][2].dakuonshow = true;
+                    this.kanas[number][3].dakuonshow = true;
+                    this.kanas[number][4].dakuonshow = true;
+                },
+                letithide :function (number) {
+                    this.kanas[number][0].dakuonshow = false;
+                    this.kanas[number][1].dakuonshow = false;
+                    this.kanas[number][2].dakuonshow = false;
+                    this.kanas[number][3].dakuonshow = false;
+                    this.kanas[number][4].dakuonshow = false;
+                }
+            },
+            watch:{
+                dakuon:function () {
+                    if (this.dakuon == true){
+                        this.letitshow(2);
+                        this.letitshow(4);
+                        this.letitshow(6);
+                        this.letitshow(9);
+                        this.letitshow(10);
+                        this.letitshow(15);
+                    }else {
+                        this.letithide(2);
+                        this.letithide(4);
+                        this.letithide(6);
+                        this.letithide(9);
+                        this.letithide(10);
+                        this.letithide(15);
+                    }
+                }
+            }
+        });
+    </script>
+</body>

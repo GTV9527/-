@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>片假名测试</title>
+    <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">五十音图</a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" aria-expanded="true">
+            <ul class="nav navbar-nav nav-pills nav-stacked">
+                <li role="presentation"><a href="gojuonzu.html" style="margin-top: 2px;">假名学习</a></li>
+                <li role="presentation"><a href="testhiragana.html">平假名测试</a></li>
+                <li role="presentation"><a href="testhiraganavoice.html">平假名听音测试</a></li>
+                <li role="presentation" class="active"><a href="#">片假名测试</a></li>
+                <li role="presentation"><a href="testkatakanavoice.html">片假名听音测试</a></li>
+                <li role="presentation"><a href="hira-kata.html">平假名对应测试</a></li>
+                <li role="presentation"><a href="kata-hira.html">片假名对应测试</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="row clearmargin text-center" id="testkatakana">
+    <div class="col-lg-2 col-md-1 rowdisplaynone clearpadding"><label></label></div>
+    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 clearpadding" :class="{displaynone : isOver}">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><label class="btn-success">正确:{{rightkananumber}}</label></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><label>剩余:{{remainder}}</label></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><label class="btn-danger">错误:{{wrongkananumber}}</label></div>
+        <div class="">
+            <label class="testkana img-thumbnail">{{showkana.katakana}}</label>
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 paddingblock">
+            <button class="btn btn-lg btn-block testanswer" @click="validate(1)" :class="[colorbutton[1].color,colorbutton[0].disabled]">{{answerkanas[1].romaji}}</button>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 paddingblock">
+            <button class="btn btn-lg btn-block testanswer" @click="validate(2)" :class="[colorbutton[2].color,colorbutton[0].disabled]">{{answerkanas[2].romaji}}</button>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 paddingblock">
+            <button class="btn btn-lg btn-block testanswer" @click="validate(3)" :class="[colorbutton[3].color,colorbutton[0].disabled]">{{answerkanas[3].romaji}}</button>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 paddingblock">
+            <button class="btn btn-lg btn-block testanswer" @click="validate(4)" :class="[colorbutton[4].color,colorbutton[0].disabled]">{{answerkanas[4].romaji}}</button>
+        </div>
+    </div>
+    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12" v-if="isOver">
+        <h1 class="kana">错误数量:{{wrongkananumber}}</h1>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 paddingblock" v-for="kana in wrongkanas">
+                <button class="btn kana" :title="kana.romaji" @click="playvoice(kana.katakana)">
+                    {{kana.katakana}}
+                </button>
+            </div>
+        </div>
+        <audio id="playVoice" style="display: none" :src="voice"></audio>
+    </div>
+    <div class="col-lg-2 col-md-1 rowdisplaynone clearpadding"><label></label></div>
+</div>
+<script type="text/javascript" src="public/js/jquery.min.js"></script>
+<script type="text/javascript" src="public/js/bootstrap.js"></script>
+<script type="text/javascript" src="public/js/vue.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+            el: '#testkatakana',
+            data: {
+                remainder: 0,
+                rightkananumber: 0,
+                wrongkananumber: 0,
+                isOver: false,
+                testkanas: [],
+                kanaboxs:[],
+                showkana: [],
+                wrongkanas: [],
+                answerkanas: [[], [], [], [], []],
+                colorbutton: [[], [], [], [], []],
+                voice : '',
+                answered : false,
+                kanas: [
+                    {
+                        katakana: 'ア',
+                        romaji: 'a',
+                        number:1
+                    }, {
+                        katakana: 'イ',
+                        romaji: 'i',
+                        number:2
+                    }, {
+                        katakana: 'ウ',
+                        romaji: 'u',
+                        number:3
+                    }, {
+                        katakana: 'エ',
+                        romaji: 'e',
+                        number:4
+                    }, {
+                        katakana: 'オ',
+                        romaji: 'o',
+                        number:5
+                    }, {
+                        katakana: 'カ',
+                        romaji: 'ka',
+                        number:6
+                    }, {
+                        katakana: 'キ',
+                        romaji: 'ki',
+                        number:7
+                    }, {
+                        katakana: 'ク',
+                        romaji: 'ku',
+                        number:8
+                    }, {
+                        katakana: 'ケ',
+                        romaji: 'ke',
+                        number:9
+                    }, {
+                        katakana: 'コ',
+                        romaji: 'ko',
+                        number:10
+                    }, {
+                        katakana: 'サ',
+                        romaji: 'sa',
+                        number:11
+                    }, {
+                        katakana: 'シ',
+                        romaji: 'shi',
+                        number:12
+                    }, {
+                        katakana: 'ス',
+                        romaji: 'su',
+                        number:13
+                    }, {
+                        katakana: 'セ',
+                        romaji: 'se',
+                        number:14
+                    }, {
+                        katakana: 'ソ',
+                        romaji: 'so',
+                        number:15
+                    }, {
+                        katakana: 'タ',
+                        romaji: 'ta',
+                        number:16
+                    }, {
+                        katakana: 'チ',
+                        romaji: 'chi',
+                        number:17
+                    }, {
+                        katakana: 'ツ',
+                        romaji: 'tsu',
+                        number:18
+                    }, {
+                        katakana: 'テ',
+                        romaji: 'te',
+                        number:19
+                    }, {
+                        katakana: 'ト',
+                        romaji: 'to',
+                        number:20
+                    }, {
+                        katakana: 'ナ',
+                        romaji: 'na',
+                        number:21
+                    }, {
+                        katakana: 'ニ',
+                        romaji: 'ni',
+                        number:22
+                    }, {
+                        katakana: 'ヌ',
+                        romaji: 'nu',
+                        number:23
+                    }, {
+                        katakana: 'ネ',
+                        romaji: 'ne',
+                        number:24
+                    }, {
+                        katakana: 'ノ',
+                        romaji: 'no',
+                        number:25
+                    }, {
+                        katakana: 'ハ',
+                        romaji: 'ha',
+                        number:26
+                    }, {
+                        katakana: 'ヒ',
+                        romaji: 'hi',
+                        number:27
+                    }, {
+                        katakana: 'フ',
+                        romaji: 'fu',
+                        number:28
+                    }, {
+                        katakana: 'ヘ',
+                        romaji: 'he',
+                        number:29
+                    }, {
+                        katakana: 'ホ',
+                        romaji: 'ho',
+                        number:30
+                    }, {
+                        katakana: 'マ',
+                        romaji: 'ma',
+                        number:31
+                    }, {
+                        katakana: 'ミ',
+                        romaji: 'mi',
+                        number:32
+                    }, {
+                        katakana: 'ム',
+                        romaji: 'mu',
+                        number:33
+                    }, {
+                        katakana: 'メ',
+                        romaji: 'me',
+                        number:34
+                    }, {
+                        katakana: 'モ',
+                        romaji: 'mo',
+                        number:35
+                    }, {
+                        katakana: 'ヤ',
+                        romaji: 'ya',
+                        number:36
+                    }, {
+                        katakana: 'ユ',
+                        romaji: 'yu',
+                        number:37
+                    }, {
+                        katakana: 'ヨ',
+                        romaji: 'yo',
+                        number:38
+                    }, {
+                        katakana: 'ラ',
+                        romaji: 'ra',
+                        number:39
+                    }, {
+                        katakana: 'リ',
+                        romaji: 'ri',
+                        number:40
+                    }, {
+                        katakana: 'ル',
+                        romaji: 'ru',
+                        number:41
+                    }, {
+                        katakana: 'レ',
+                        romaji: 're',
+                        number:42
+                    }, {
+                        katakana: 'ロ',
+                        romaji: 'ro',
+                        number:43
+                    }, {
+                        katakana: 'ワ',
+                        romaji: 'wa',
+                        number:44
+                    }, {
+                        katakana: 'ヲ',
+                        romaji: 'wo',
+                        number:45
+                    }, {
+                        katakana: 'ン',
+                        romaji: 'nn',
+                        number:46
+                    }
+                ]
+            },
+            methods: {
+                createtestkanas: function () {
+                    this.testkanas = JSON.parse(JSON.stringify(this.kanas));
+                    this.kanaboxs = JSON.parse(JSON.stringify(this.kanas));
+                    this.initshowkana();
+                },
+                initshowkana: function () {
+                    var randomanswer = Math.ceil(Math.random() * 4);
+                    var randomkana = Math.floor(Math.random() * this.testkanas.length);
+                    this.showkana = this.testkanas[randomkana];
+                    this.answerkanas = [[], [], [], [], []];
+                    this.answerkanas[0] = randomanswer;
+                    this.colorbutton = [[], [], [], [], []];
+                    this.answered = false;
+                    this.testkanas.splice(randomkana, 1);
+                    this.kanaboxs.splice(this.showkana.number, 1);
+                    switch (randomanswer) {
+                        case 1 :
+                            this.answerkanas[1] = this.showkana;
+                            this.answerrandom(2);
+                            this.answerrandom(3);
+                            this.answerrandom(4);
+                            break;
+                        case 2 :
+                            this.answerrandom(1);
+                            this.answerkanas[2] = this.showkana;
+                            this.answerrandom(3);
+                            this.answerrandom(4);
+                            break;
+                        case 3 :
+                            this.answerrandom(1);
+                            this.answerrandom(2);
+                            this.answerkanas[3] = this.showkana;
+                            this.answerrandom(4);
+                            break;
+                        case 4 :
+                            this.answerrandom(1);
+                            this.answerrandom(2);
+                            this.answerrandom(3);
+                            this.answerkanas[4] = this.showkana;
+                            break;
+                    }
+                    this.remainder = this.testkanas.length;
+                },
+                answerrandom : function (number) {
+                    var wrongkana = Math.floor(Math.random() * this.kanaboxs.length);
+                    this.answerkanas[number] = this.kanaboxs[wrongkana];
+                    this.kanaboxs.splice(wrongkana,1);
+                },
+                wronganswercolor : function (a,b,c) {
+                    this.colorbutton[a].color = "btn-danger";
+                    this.colorbutton[b].color = "btn-danger";
+                    this.colorbutton[c].color = "btn-danger";
+                },
+                validate: function (answer) {
+                    if (this.answered !== true) {
+                        switch (this.answerkanas[0]) {
+                            case 1:
+                                this.colorbutton[1].color = "btn-success";
+                                this.wronganswercolor(2,3,4);
+                                break;
+                            case 2:
+                                this.colorbutton[2].color = "btn-success";
+                                this.wronganswercolor(1,3,4);
+                                break;
+                            case 3:
+                                this.colorbutton[3].color = "btn-success";
+                                this.wronganswercolor(1,2,4);
+                                break;
+                            case 4:
+                                this.colorbutton[4].color = "btn-success";
+                                this.wronganswercolor(1,2,3);
+                                break;
+                        }
+                        this.colorbutton[0].disabled = "disabled";
+                        this.answered = true;
+                        this.kanaboxs = JSON.parse(JSON.stringify(this.kanas));
+                        if (answer == this.answerkanas[0]) {
+                            this.rightkananumber += 1;
+                            if (this.testkanas.length == 0) {
+                                this.isOver = true;
+                            } else {
+                                setTimeout(this.initshowkana,1000);
+                            }
+                        } else {
+                            this.wrongkananumber += 1;
+                            this.wrongkanas.push(this.showkana);
+                            if (this.testkanas.length == 0) {
+                                this.isOver = true;
+                            } else {
+                                setTimeout(this.initshowkana,1000);
+                            }
+                        }
+                    }else {}
+                },
+                playvoice: function (katakana) {
+                    this.voice = "http://fanyi.baidu.com/gettts?lan=jp&text=" + katakana + "&source=web";
+                    setTimeout(this.Play,0);
+                },
+                Play : function(){
+                    var audio = document.querySelector("#playVoice");
+                    audio.play();
+                }
+
+            },
+            created: function () {
+                this.createtestkanas();
+            }
+        })
+        ;
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+body{
+    font-family: SourceHanSans;
+}
+.clearpadding{
+    padding:0px;
+}
+.clearmargin{
+    margin:0px;
+ }
+
+a,a:hover,a:link,a:visited{
+    text-decoration:none;
+    color: #000;
+}
+.displaynone{
+    display: none;
+}
+.kana{
+    font-size: 60px;
+    border: solid #444444;
+}
+.testkana{
+    font-size: 180px;
+    border: solid #444444;
+    display: inline;
+}
+.paddingblock{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.testanswer{
+    font-size:40px;
+}
+@media (max-width:991px){
+    .rowdisplaynone{
+        display: none;
+    }
+}
+@media (max-width:570px){
+    .kana{
+        font-size: 25px;
+    }
+}
+@media (max-width:402px){
+    .kana{
+        font-size: 20px;
+    }
+}
+@font-face {
+    font-family: 'SourceHanSans';
+    src: url("../fonts/SourceHanSans-Regular.eot"); /* IE9 */
+    src: url("../fonts/SourceHanSans-Regular.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    url("../fonts/SourceHanSans-Regular.woff") format("woff"), /* chrome、firefox */
+    url("../fonts/SourceHanSans-Regular.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
+    url("../fonts/SourceHanSans-Regular.svg#SourceHanSansSC-Normal") format("svg"); /* iOS 4.1- */
+}
